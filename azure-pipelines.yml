@@ -1,0 +1,39 @@
+# This pipeline build and tests the dotnet core project on an Ubuntu build agent.
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    version: '5.0.x'
+    includePreviewVersions: true # Required for preview versions
+
+- task: UseDotNet@2
+  inputs:
+    version: '3.1.x'
+    packageType: runtime
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+  displayName: 'dotnet restore'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'
+  
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'dotnet test'
+
