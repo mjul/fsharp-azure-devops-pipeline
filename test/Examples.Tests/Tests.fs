@@ -2,6 +2,7 @@ module Examples.Tests
 
 open System
 open Xunit
+open FsCheck.Xunit
 
 open Examples
 
@@ -17,3 +18,12 @@ let ``FlakyCalculator can add two plus two`` () =
 let ``FlakyCalculator can add two integers`` a b expected =
     let actual = Examples.FlakyCalculator.add a b
     Assert.Equal(expected, actual)
+
+
+// Note: this finds the bug in FlakyCalculator:
+    
+[<Property>]
+let ``FlakyCalculator add is commutative`` a b =
+    let sum_ab= Examples.FlakyCalculator.add a b
+    let sum_ba= Examples.FlakyCalculator.add b a
+    Assert.Equal(sum_ab, sum_ba)
