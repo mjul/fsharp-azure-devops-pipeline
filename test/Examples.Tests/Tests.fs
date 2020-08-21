@@ -15,6 +15,8 @@ let ``FlakyCalculator can add two plus two`` () =
 
 [<Theory>]
 [<InlineData(1,2,3)>]
+[<InlineData(2,3,5)>]
+[<InlineData(-1,1,0)>]
 let ``FlakyCalculator can add two integers`` a b expected =
     let actual = Examples.FlakyCalculator.add a b
     Assert.Equal(expected, actual)
